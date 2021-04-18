@@ -42,5 +42,5 @@ void MainWindow::on_pushButton_clicked()
 {
     emit sendQuery();
     emit renewTable();
-    resizeTables();
+    resizeTabls();
 }

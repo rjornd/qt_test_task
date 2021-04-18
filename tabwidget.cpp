@@ -17,33 +17,30 @@ void TabWidget::showEvent(QShowEvent *e)
 {
     if (!firstcall) return;
     emit getNames();
-    emit renewTable();
-
+    emit renewTable(names.key(ui->comboBox->currentText()));
+    resizeTables();
     this->firstcall = false;
 }
 
 
 void TabWidget::resizeEvent(QResizeEvent *e)
 {
-
     QTabWidget::resizeEvent(e);
     resizeTables();
 }
 
 void TabWidget::resizeTables()
 {
-    int w = ui->tableView->width()/7;
-    for (int i=0; i<7; i++)
+    int w = ui->tableView->width()/2;
+    for (int i=0; i<10; i++)
         ui->tableView->setColumnWidth(i,w);
 }
 void TabWidget::setModel(QSqlTableModel* m)
 {
-    ui->tableView->setModel(m);
     resizeTables();
+    ui->tableView->setModel(m);
 }
-
 void TabWidget::renewComboBox(){
-
     ui->comboBox->clear();
     foreach (QString name, this->names) {
         ui->comboBox->addItem(name);
@@ -66,18 +63,43 @@ void TabWidget::showMessage(QString m)
 
 void TabWidget::on_pushButton_clicked()
 {
+    needUpdate();
+}
+void TabWidget::needUpdate()
+{
     emit getNames();
-    emit renewTable();
+    emit renewTable(names.key(ui->comboBox->currentText()));
     resizeTables();
 }
-
-void TabWidget::fillAddrBook(QStringList addrbook)
+void TabWidget::fillAddrBook(QMap<int, Prj_group_addrbook> addrbook)
 {
+    this->addrbook.clear();
+    this->addrbook = addrbook;
     ui->listWidget->clear();
-    ui->listWidget->addItems(addrbook);
+    foreach (Prj_group_addrbook contact, addrbook) {
+        auto *item = new QListWidgetItem(contact.toString());
+        contact.setGroupId(names.key(ui->comboBox->currentText()));
+        QVariant v;
+        v.setValue(contact);
+        item->setData(Qt::UserRole, v);
+        item->setText(contact.toString());
+        ui->listWidget->addItem(item);
+    }
 }
 
 void TabWidget::on_comboBox_currentTextChanged(const QString &name)
 {
     emit getContacts(names.key(name));
+    emit renewTable(names.key(name));
+}
+
+void TabWidget::on_listWidget_itemDoubleClicked(QListWidgetItem *item)
+{
+    QVariant v = item->data(Qt::UserRole);
+    Prj_group_addrbook contact = v.value<Prj_group_addrbook>();
+    updateContact *updDialog = new updateContact();
+    QObject::connect(updDialog,SIGNAL(dbupdateContact(Prj_group_addrbook)),this,SIGNAL(dbupdateContact(Prj_group_addrbook)));
+    QObject::connect(updDialog,SIGNAL(dbremoveContact(Prj_group_addrbook)),this,SIGNAL(dbremoveContact(Prj_group_addrbook)));
+    updDialog->getContact(contact);
+    updDialog->show();
 }

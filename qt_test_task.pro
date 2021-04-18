@@ -19,19 +19,20 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     dbproxy.cpp \
     main.cpp \
-    mainwindow.cpp \
     prj_group_addrbook.cpp \
-    tabwidget.cpp
+    tabwidget.cpp \
+    updatecontact.cpp
 
 HEADERS += \
     dbproxy.h \
-    mainwindow.h \
     prj_group_addrbook.h \
-    tabwidget.h
+    tabwidget.h \
+    updatecontact.h
 
 FORMS += \
     mainwindow.ui \
-    tabwidget.ui
+    tabwidget.ui \
+    updatecontact.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

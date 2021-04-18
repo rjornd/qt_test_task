@@ -5,7 +5,7 @@
 
 #include <QObject>
 #include <QtSql>
-
+#include "prj_group_addrbook.h"
 class DBproxy : public QObject
 {
     Q_OBJECT
@@ -18,16 +18,18 @@ signals:
     void dberror(QString);
     void dbanswer(QString);
     void dbanswerNames(QMap<int, QString>);
-    void dbanswer(QStringList);
+    void dbanswerContacts(QMap<int, Prj_group_addrbook>);
     void table_model(QSqlTableModel*);
 public:
     DBproxy();
     static DBproxy* getInstance();
 
 public slots:
-    void renewTable();
+    void renewTable(int);
     void status();
     void opendb();
     void getNames();
     void getContacts(int);
+    void dbupdateContact(Prj_group_addrbook);
+    void dbremoveContact(Prj_group_addrbook);
 };
