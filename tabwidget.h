@@ -19,6 +19,7 @@ private:
     QMap<int, Prj_group_addrbook> addrbook;
     void renewComboBox();
     bool firstcall = true;
+    int cur_group_id = 1;
 public:
     explicit TabWidget(QWidget *parent = nullptr);
     ~TabWidget();

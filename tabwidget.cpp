@@ -63,13 +63,13 @@ void TabWidget::showMessage(QString m)
 
 void TabWidget::on_pushButton_clicked()
 {
-    needUpdate();
-}
-void TabWidget::needUpdate()
-{
     emit getNames();
     emit renewTable(names.key(ui->comboBox->currentText()));
     resizeTables();
+}
+void TabWidget::needUpdate()
+{
+    emit getContacts(cur_group_id);
 }
 void TabWidget::fillAddrBook(QMap<int, Prj_group_addrbook> addrbook)
 {
@@ -89,8 +89,9 @@ void TabWidget::fillAddrBook(QMap<int, Prj_group_addrbook> addrbook)
 
 void TabWidget::on_comboBox_currentTextChanged(const QString &name)
 {
-    emit getContacts(names.key(name));
-    emit renewTable(names.key(name));
+    this->cur_group_id = names.key(name);
+    emit getContacts(cur_group_id);
+    emit renewTable(cur_group_id);
 }
 
 void TabWidget::on_listWidget_itemDoubleClicked(QListWidgetItem *item)
