@@ -24,6 +24,7 @@ private slots:
 
     void on_deleteContact_clicked();
 
+    void closeChanger();
 signals:
     void dbremoveContact(Prj_group_addrbook);
     void dbupdateContact(Prj_group_addrbook);

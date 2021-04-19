@@ -114,3 +114,17 @@ void DBproxy::dbremoveContact(Prj_group_addrbook contact)
         else emit dbanswer(contact.toString() +" "+"removed" +" from group_id =" + QString::number(contact.getGroupId()));
     }
 }
+
+void DBproxy::dbaddContact(Prj_group_addrbook contact)
+{
+    QString qIns;
+    qIns="insert into `prj_group_addrbook` (prj_group_id, family, first_name, addrbook_type_id) "
+         "values ('%1', '%2', '%3', 1);";
+    if (db.isOpen())
+    {
+        qIns = qIns.arg(contact.getGroupId()).arg(contact.getFamily()).arg(contact.getFirstName());
+        QSqlQuery query(db);
+        if (!query.exec(qIns)) emit dberror(query.lastError().text());
+        else emit dbanswer(contact.toString() + " " + "added" + " to group_id =" + QString::number(contact.getGroupId()));
+    }
+}

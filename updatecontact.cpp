@@ -12,6 +12,10 @@ updateContact::~updateContact()
 {
     delete ui;
 }
+void updateContact::closeChanger()
+{
+    this->close();
+}
 
 void updateContact::setFamily(QString family)
 {

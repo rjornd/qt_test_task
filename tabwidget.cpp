@@ -13,6 +13,11 @@ TabWidget::~TabWidget()
     delete ui;
 }
 
+void TabWidget::closeEvent(QCloseEvent *)
+{
+    emit closeChanger();
+}
+
 void TabWidget::showEvent(QShowEvent *e)
 {
     if (!firstcall) return;
@@ -70,6 +75,7 @@ void TabWidget::on_pushButton_clicked()
 void TabWidget::needUpdate()
 {
     emit getContacts(cur_group_id);
+    createCompleter();
 }
 void TabWidget::fillAddrBook(QMap<int, Prj_group_addrbook> addrbook)
 {
@@ -91,6 +97,7 @@ void TabWidget::on_comboBox_currentTextChanged(const QString &name)
 {
     this->cur_group_id = names.key(name);
     emit getContacts(cur_group_id);
+    createCompleter();
     emit renewTable(cur_group_id);
 }
 
@@ -101,6 +108,46 @@ void TabWidget::on_listWidget_itemDoubleClicked(QListWidgetItem *item)
     updateContact *updDialog = new updateContact();
     QObject::connect(updDialog,SIGNAL(dbupdateContact(Prj_group_addrbook)),this,SIGNAL(dbupdateContact(Prj_group_addrbook)));
     QObject::connect(updDialog,SIGNAL(dbremoveContact(Prj_group_addrbook)),this,SIGNAL(dbremoveContact(Prj_group_addrbook)));
+    QObject::connect(this,SIGNAL(closeChanger()),updDialog,SLOT(closeChanger()));
+    updDialog->getContact(contact);
+    updDialog->show();
+}
+
+void TabWidget::on_addcontact_clicked()
+{
+    addContactForm *form = new addContactForm();
+    form->setGroupId(cur_group_id);
+    QObject::connect(form,SIGNAL(dbaddContact(Prj_group_addrbook)),this,SIGNAL(dbaddContact(Prj_group_addrbook)));
+    QObject::connect(this,SIGNAL(closeChanger()),form,SLOT(closeChanger()));
+    form->show();
+}
+
+void TabWidget::createCompleter()
+{
+    QCompleter* completer = new QCompleter(this);
+    static QStandardItemModel model;
+    model.clear();
+    QStandardItem *item;
+
+    for (int i = 0; i < ui->listWidget->count();i++) {
+        item = new QStandardItem(ui->listWidget->item(i)->data(Qt::UserRole).value<Prj_group_addrbook>().toString());
+        item->setData(ui->listWidget->item(i)->data(Qt::UserRole), Qt::UserRole);
+        model.appendRow(item);
+    }
+    completer->setModel(&model);
+    completer->setCompletionMode(QCompleter::PopupCompletion);
+    completer->setCaseSensitivity(Qt::CaseInsensitive);
+    ui->find->setCompleter(completer);
+}
+
+
+void TabWidget::on_find_returnPressed()
+{
+    Prj_group_addrbook contact = ui->find->completer()->currentIndex().data(Qt::UserRole).value<Prj_group_addrbook>();
+    updateContact *updDialog = new updateContact();
+    QObject::connect(updDialog,SIGNAL(dbupdateContact(Prj_group_addrbook)),this,SIGNAL(dbupdateContact(Prj_group_addrbook)));
+    QObject::connect(updDialog,SIGNAL(dbremoveContact(Prj_group_addrbook)),this,SIGNAL(dbremoveContact(Prj_group_addrbook)));
+    QObject::connect(this,SIGNAL(closeChanger()),updDialog,SLOT(closeChanger()));
     updDialog->getContact(contact);
     updDialog->show();
 }

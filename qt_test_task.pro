@@ -17,6 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    addcontactform.cpp \
     dbproxy.cpp \
     main.cpp \
     prj_group_addrbook.cpp \
@@ -24,12 +25,14 @@ SOURCES += \
     updatecontact.cpp
 
 HEADERS += \
+    addcontactform.h \
     dbproxy.h \
     prj_group_addrbook.h \
     tabwidget.h \
     updatecontact.h
 
 FORMS += \
+    addcontactform.ui \
     mainwindow.ui \
     tabwidget.ui \
     updatecontact.ui

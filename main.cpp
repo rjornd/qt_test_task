@@ -19,6 +19,7 @@ int main(int argc, char *argv[])
     QObject::connect(&w, SIGNAL(getContacts(int)), DBproxy::getInstance(), SLOT(getContacts(int)));
     QObject::connect(&w,SIGNAL(dbupdateContact(Prj_group_addrbook)),DBproxy::getInstance(),SLOT(dbupdateContact(Prj_group_addrbook)));
     QObject::connect(&w,SIGNAL(dbremoveContact(Prj_group_addrbook)),DBproxy::getInstance(),SLOT(dbremoveContact(Prj_group_addrbook)));
+    QObject::connect(&w,SIGNAL(dbaddContact(Prj_group_addrbook)),DBproxy::getInstance(),SLOT(dbaddContact(Prj_group_addrbook)));
     w.show();
     return a.exec();
 }

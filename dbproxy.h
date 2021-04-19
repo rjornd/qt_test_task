@@ -32,4 +32,5 @@ public slots:
     void getContacts(int);
     void dbupdateContact(Prj_group_addrbook);
     void dbremoveContact(Prj_group_addrbook);
+    void dbaddContact(Prj_group_addrbook);
 };

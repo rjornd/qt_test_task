@@ -4,9 +4,11 @@
 #include <QTabWidget>
 #include <QSqlTableModel>
 #include <QMessageBox>
-
+#include "addcontactform.h"
 #include <QListWidgetItem>
 #include "updatecontact.h"
+#include <QStandardItemModel>
+#include <QCompleter>
 namespace Ui {
 class TabWidget;
 }
@@ -27,6 +29,7 @@ public:
     void resizeEvent(QResizeEvent *);
     void resizeTables();
     void showEvent(QShowEvent *) override;
+    void closeEvent(QCloseEvent *) override;
 private slots:
       void setModel(QSqlTableModel*);
       void showMessage(QString);
@@ -37,15 +40,22 @@ private slots:
       void on_listWidget_itemDoubleClicked(QListWidgetItem *item);
       void needUpdate();
 
+      void on_addcontact_clicked();
+
+      void on_find_returnPressed();
+
 signals:
+    void closeChanger();
     void renewTable(int);
     void getNames();
     void getContacts(int);
     void getData();
     void dbupdateContact(Prj_group_addrbook);
     void dbremoveContact(Prj_group_addrbook);
+    void dbaddContact(Prj_group_addrbook);
 private:
     Ui::TabWidget *ui;
+    void createCompleter();
 };
 
 #endif // TABWIDGET_H
