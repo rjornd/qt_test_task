@@ -26,6 +26,7 @@ SOURCES += \
 
 HEADERS += \
     addcontactform.h \
+    config.h \
     dbproxy.h \
     prj_group_addrbook.h \
     tabwidget.h \

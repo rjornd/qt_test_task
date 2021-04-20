@@ -6,6 +6,7 @@ TabWidget::TabWidget(QWidget *parent) :
     ui(new Ui::TabWidget)
 {
     ui->setupUi(this);
+    this->setWindowTitle("test task");
 }
 
 TabWidget::~TabWidget()
@@ -18,7 +19,7 @@ void TabWidget::closeEvent(QCloseEvent *)
     emit closeChanger();
 }
 
-void TabWidget::showEvent(QShowEvent *e)
+void TabWidget::showEvent(QShowEvent *)
 {
     if (!firstcall) return;
     emit getNames();
@@ -125,19 +126,16 @@ void TabWidget::on_addcontact_clicked()
 void TabWidget::createCompleter()
 {
     QCompleter* completer = new QCompleter(this);
-    static QStandardItemModel model;
-    model.clear();
-    QStandardItem *item;
-
-    for (int i = 0; i < ui->listWidget->count();i++) {
-        item = new QStandardItem(ui->listWidget->item(i)->data(Qt::UserRole).value<Prj_group_addrbook>().toString());
-        item->setData(ui->listWidget->item(i)->data(Qt::UserRole), Qt::UserRole);
-        model.appendRow(item);
-    }
-    completer->setModel(&model);
+    auto model = ui->listWidget->model();
+    completer->setModel(model);
     completer->setCompletionMode(QCompleter::PopupCompletion);
     completer->setCaseSensitivity(Qt::CaseInsensitive);
     ui->find->setCompleter(completer);
+    QObject::connect(completer, QOverload<const QModelIndex &>::of(&QCompleter::highlighted),
+        [=](const QModelIndex &index) {
+            completer->setCurrentRow(index.row());
+        }
+    );
 }
 
 

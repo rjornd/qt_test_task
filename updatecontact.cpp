@@ -21,10 +21,12 @@ void updateContact::setFamily(QString family)
 {
     ui->family->setText(family);
 }
+
 void updateContact::setFirstName(QString firstname)
 {
     ui->firstName->setText(firstname);
 }
+
 void updateContact::getContact(Prj_group_addrbook contact)
 {
     ui->family->clear();
