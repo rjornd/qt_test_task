@@ -6,6 +6,7 @@
 #include <QObject>
 #include <QtSql>
 #include "prj_group_addrbook.h"
+#include "config.h"
 class DBproxy : public QObject
 {
     Q_OBJECT

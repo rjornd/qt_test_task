@@ -5,7 +5,7 @@ DBproxy* DBproxy::m_instance=nullptr;
 DBproxy::DBproxy() : QObject(nullptr)
 {
     db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName(QDir::homePath() + "/addrbooks.db");
+    db.setDatabaseName(PATH_TO_DB);
     model = new QSqlTableModel(this);
 }
 
