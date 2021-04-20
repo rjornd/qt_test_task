@@ -7,6 +7,7 @@ TabWidget::TabWidget(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setWindowTitle("test task");
+    createCompleter();
 }
 
 TabWidget::~TabWidget()
@@ -76,7 +77,6 @@ void TabWidget::on_pushButton_clicked()
 void TabWidget::needUpdate()
 {
     emit getContacts(cur_group_id);
-    createCompleter();
 }
 void TabWidget::fillAddrBook(QMap<int, Prj_group_addrbook> addrbook)
 {
@@ -98,7 +98,6 @@ void TabWidget::on_comboBox_currentTextChanged(const QString &name)
 {
     this->cur_group_id = names.key(name);
     emit getContacts(cur_group_id);
-    createCompleter();
     emit renewTable(cur_group_id);
 }
 
