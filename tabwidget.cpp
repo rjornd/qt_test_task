@@ -77,6 +77,7 @@ void TabWidget::on_pushButton_clicked()
 void TabWidget::needUpdate()
 {
     emit getContacts(cur_group_id);
+    ui->find->clear();
 }
 void TabWidget::fillAddrBook(QMap<int, Prj_group_addrbook> addrbook)
 {
@@ -147,4 +148,17 @@ void TabWidget::on_find_returnPressed()
     QObject::connect(this,SIGNAL(closeChanger()),updDialog,SLOT(closeChanger()));
     updDialog->getContact(contact);
     updDialog->show();
+}
+
+void TabWidget::on_pushButton_2_clicked()
+{
+    if (sort){
+           ui->listWidget->sortItems(Qt::DescendingOrder);
+           ui->pushButton_2->setText("По убыванию");
+       }
+       else{
+           ui->listWidget->sortItems(Qt::AscendingOrder);
+           ui->pushButton_2->setText("По возрастанию");
+       }
+       sort = !sort;
 }

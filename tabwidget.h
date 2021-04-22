@@ -22,6 +22,7 @@ private:
     void renewComboBox();
     bool firstcall = true;
     int cur_group_id = 1;
+    bool sort = false;
 public:
     explicit TabWidget(QWidget *parent = nullptr);
     ~TabWidget();
@@ -43,6 +44,8 @@ private slots:
       void on_addcontact_clicked();
 
       void on_find_returnPressed();
+
+      void on_pushButton_2_clicked();
 
 signals:
     void closeChanger();
