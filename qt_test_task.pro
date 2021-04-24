@@ -34,7 +34,6 @@ HEADERS += \
 
 FORMS += \
     addcontactform.ui \
-    mainwindow.ui \
     tabwidget.ui \
     updatecontact.ui
 
